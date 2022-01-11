@@ -21,7 +21,7 @@ public class PostReader {
     public PostReader(Post post) throws ReaderException {
         try{
             this.post = post;
-            this.comments = this.getComments();
+            this.comments = getComments();
         } catch (UrlException e){
             throw new ReaderException(String.format(ERROR_COMMENTS, this.post.title));
         }
@@ -34,14 +34,14 @@ public class PostReader {
     }
 
     public JsonObject getJsonComments() throws UrlException {
-        JsonArray jsonCommentPage = JsonGateway.getJsonArrayFromUrl(this.post.commentUrl);
+        JsonArray jsonCommentPage = JsonGateway.getJsonArrayFromUrl(post.commentUrl);
         JsonObject jsonCommentSection = jsonCommentPage.get(1).getAsJsonObject();
         return jsonCommentSection.getAsJsonObject("data");
     }
 
     public List<Comment> getComments() throws UrlException {
         List<Comment> comments = new ArrayList<>();
-        JsonObject jsonCommentSection = this.getJsonComments();
+        JsonObject jsonCommentSection = getJsonComments();
         JsonArray jsonComments = jsonCommentSection.getAsJsonArray("children");
         for (JsonElement jsonElementComment : jsonComments){
             JsonObject jsonComment = jsonElementComment.getAsJsonObject();

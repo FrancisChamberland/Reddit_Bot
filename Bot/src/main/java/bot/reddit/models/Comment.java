@@ -10,20 +10,20 @@ public class Comment {
 
     public Comment(JsonObject jsonComment){
         this.jsonComment = jsonComment;
-        this.setProperties();;
+        setProperties();
     }
 
     public void setProperties(){
-        this.authorName = this.jsonComment.get("author").getAsString();
-        this.score = this.jsonComment.get("score").getAsInt();
-        this.text = this.jsonComment.get("body").getAsString();
+        authorName = jsonComment.get("author").getAsString();
+        score = jsonComment.get("score").getAsInt();
+        text = jsonComment.get("body").getAsString();
     }
 
     @Override
     public String toString() {
-        String authorDisplay = "Author : " + this.authorName;
-        String scoreDisplay = "Score : " + this.score;
-        String textDisplay = this.text;
+        String authorDisplay = "Author : " + authorName;
+        String scoreDisplay = "Score : " + score;
+        String textDisplay = text;
         return String.format("%s\n%s\n%s\n",
                 authorDisplay, scoreDisplay, textDisplay);
     }

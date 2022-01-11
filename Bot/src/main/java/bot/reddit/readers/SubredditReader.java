@@ -29,9 +29,9 @@ public class SubredditReader {
         try {
             this.subreddit = subreddit;
             this.numberOfPost = numberOfPost;
-            this.url = this.getUrl();
-            this.jsonSubreddit = this.getJsonSubreddit();
-            this.posts = this.getPosts();
+            url = getUrl();
+            jsonSubreddit = getJsonSubreddit();
+            posts = getPosts();
             deleteFolderContent(IMAGE_PATH);
         } catch (Exception e){
             throw new ReaderException(String.format(ERROR_SUBREDDIT, this.subreddit));
@@ -39,41 +39,41 @@ public class SubredditReader {
     }
 
     public void printPostImages(){
-        for (Post post : this.posts){
+        for (Post post : posts){
             if (post.hasOneImage() || post.hasMultipleImages())
                 System.out.println(post.getImageMessage());
         }
     }
 
     public void printAllPosts(){
-        for (Post post : this.posts){
-            this.printPost(post);
+        for (Post post : posts){
+            printPost(post);
         }
     }
 
     public void printNotStickiedPosts(){
-        for (Post post : this.posts){
+        for (Post post : posts){
             if (!post.isStickied)
-                this.printPost(post);
+                printPost(post);
         }
     }
 
     public void printPost(Post post){
-        System.out.printf("[%s] %s\n", this.posts.indexOf(post), post.toString());
+        System.out.printf("[%s] %s\n", posts.indexOf(post), post.toString());
     }
 
     public void savePostsImages(){
-        for (Post post : this.posts){
+        for (Post post : posts){
             if (post.hasOneImage() || post.hasMultipleImages())
                 for (String imageUrl : post.imagesUrls){
-                    this.saveImageToFile(imageUrl);
+                    saveImageToFile(imageUrl);
                 }
         }
     }
 
     private void saveImageToFile(String imageUrl){
         try (InputStream in = new URL(imageUrl).openStream()){
-            String image = this.formatImageUrl(imageUrl);
+            String image = formatImageUrl(imageUrl);
             Files.copy(in, Paths.get(IMAGE_PATH + image));
             System.out.printf("Saving : %s\n", imageUrl);
         } catch (IOException e) {
@@ -104,8 +104,8 @@ public class SubredditReader {
 
     private List<Post> getPosts(){
         List<Post> posts = new ArrayList<>();
-        JsonArray jsonPosts = this.jsonSubreddit.get("children").getAsJsonArray();
-        for (int i = 0; i < this.numberOfPost; i++){
+        JsonArray jsonPosts = jsonSubreddit.get("children").getAsJsonArray();
+        for (int i = 0; i < numberOfPost; i++){
             Post post = new Post(jsonPosts.get(i).getAsJsonObject());
             posts.add(post);
         }
@@ -113,6 +113,6 @@ public class SubredditReader {
     }
 
     private String getUrl(){
-        return String.format("https://www.reddit.com/r/%s/.json?limit=%s", this.subreddit, this.numberOfPost);
+        return String.format("https://www.reddit.com/r/%s/.json?limit=%s", subreddit, numberOfPost);
     }
 }
