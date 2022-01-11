@@ -3,7 +3,7 @@ package bot.reddit.readers;
 import bot.reddit.models.Post;
 import bot.reddit.exceptions.ReaderException;
 import bot.reddit.exceptions.UrlException;
-import bot.reddit.jsonExtractor;
+import bot.reddit.utils.JsonGateway;
 import com.google.gson.*;
 
 import java.io.File;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubredditReader {
-    public static final String IMAGE_PATH = "SubredditImages/";
-    public static final String ERROR_SUBREDDIT = "Subreddit is invalid : %s\n";
+    public static final String IMAGE_PATH = "saves/";
+    public static final String ERROR_SUBREDDIT = "Subreddit %s doesn't exist\n";
 
     public String url;
     public String subreddit;
@@ -33,7 +33,7 @@ public class SubredditReader {
             this.jsonSubreddit = this.getJsonSubreddit();
             this.posts = this.getPosts();
             deleteFolderContent(IMAGE_PATH);
-        } catch (UrlException e){
+        } catch (Exception e){
             throw new ReaderException(String.format(ERROR_SUBREDDIT, this.subreddit));
         }
     }
@@ -45,17 +45,21 @@ public class SubredditReader {
         }
     }
 
-    public void printPosts(){
+    public void printAllPosts(){
         for (Post post : this.posts){
-            System.out.println(post.toString());
+            this.printPost(post);
         }
     }
 
     public void printNotStickiedPosts(){
         for (Post post : this.posts){
             if (!post.isStickied)
-                System.out.println(post.toString());
+                this.printPost(post);
         }
+    }
+
+    public void printPost(Post post){
+        System.out.printf("[%s] %s\n", this.posts.indexOf(post), post.toString());
     }
 
     public void savePostsImages(){
@@ -94,7 +98,7 @@ public class SubredditReader {
     }
 
     private JsonObject getJsonSubreddit() throws UrlException {
-        JsonObject jsonSubreddit = jsonExtractor.getJsonObjectFromUrl(url);
+        JsonObject jsonSubreddit = JsonGateway.getJsonObjectFromUrl(url);
         return jsonSubreddit.getAsJsonObject("data");
     }
 

@@ -4,7 +4,7 @@ import bot.reddit.models.Comment;
 import bot.reddit.models.Post;
 import bot.reddit.exceptions.ReaderException;
 import bot.reddit.exceptions.UrlException;
-import bot.reddit.jsonExtractor;
+import bot.reddit.utils.JsonGateway;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -34,7 +34,7 @@ public class PostReader {
     }
 
     public JsonObject getJsonComments() throws UrlException {
-        JsonArray jsonCommentPage = jsonExtractor.getJsonArrayFromUrl(this.post.commentUrl);
+        JsonArray jsonCommentPage = JsonGateway.getJsonArrayFromUrl(this.post.commentUrl);
         JsonObject jsonCommentSection = jsonCommentPage.get(1).getAsJsonObject();
         return jsonCommentSection.getAsJsonObject("data");
     }

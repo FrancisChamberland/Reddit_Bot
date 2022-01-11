@@ -1,4 +1,4 @@
-package bot.reddit;
+package bot.reddit.utils;
 
 import bot.reddit.exceptions.UrlException;
 import com.google.gson.JsonArray;
@@ -14,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class jsonExtractor {
+public class JsonGateway {
 
     private static final String ERROR_READER = "Could not get reader from : %s";
     private static final String ERROR_JSON_SYNTAX = "Could not get json from : %s";

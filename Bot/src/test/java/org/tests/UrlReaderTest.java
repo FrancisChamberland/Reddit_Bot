@@ -2,7 +2,7 @@ package org.tests;
 
 import static org.junit.Assert.assertTrue;
 
-import bot.reddit.jsonExtractor;
+import bot.reddit.utils.JsonGateway;
 import bot.reddit.exceptions.UrlException;
 import com.google.gson.JsonObject;
 import org.junit.Test;
@@ -15,6 +15,6 @@ public class UrlReaderTest
         String url = "https://www.reddit.com/";
 
         //Act
-        JsonObject result = jsonExtractor.getJsonObjectFromUrl(url);
+        JsonObject result = JsonGateway.getJsonObjectFromUrl(url);
     }
 }
